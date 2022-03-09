@@ -1,5 +1,8 @@
 import processing.core.PApplet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProcessingApplication extends PApplet {
     public static final int WIDTH = 640;
     public static final int HEIGHT = 480;
@@ -8,13 +11,19 @@ public class ProcessingApplication extends PApplet {
     public static final int BALL_2_SPEED = 2;
     public static final int BALL_3_SPEED = 3;
     public static final int BALL_4_SPEED = 4;
-    int ball1Position = 0;
-    int ball2Position = 0;
-    int ball3Position = 0;
-    int ball4Position = 0;
+    public List<Ball> balls = new ArrayList<>();
 
     public static void main(String[] args) {
         PApplet.main("ProcessingApplication", args);
+    }
+
+    @Override
+    public void setup() {
+        super.setup();
+        balls.add(new Ball(HEIGHT / 5, BALL_1_SPEED));
+        balls.add(new Ball(2 * HEIGHT / 5, BALL_2_SPEED));
+        balls.add(new Ball(3 * HEIGHT / 5, BALL_3_SPEED));
+        balls.add(new Ball(4 * HEIGHT / 5, BALL_4_SPEED));
     }
 
     @Override
@@ -31,17 +40,15 @@ public class ProcessingApplication extends PApplet {
     }
 
     private void changeBallPositions() {
-        ball1Position += BALL_1_SPEED;
-        ball2Position += BALL_2_SPEED;
-        ball3Position += BALL_3_SPEED;
-        ball4Position += BALL_4_SPEED;
+        for (Ball ball : balls) {
+            ball.updatePosition();
+        }
     }
 
     private void drawBalls() {
-        drawBall(HEIGHT / 5, ball1Position);
-        drawBall(2 * HEIGHT / 5, ball2Position);
-        drawBall(3 * HEIGHT / 5, ball3Position);
-        drawBall(4 * HEIGHT / 5, ball4Position);
+        for (Ball ball : balls) {
+            drawBall(ball.getHEIGHT(), ball.getPosition());
+        }
     }
 
     private void drawBall(int height, int position) {
